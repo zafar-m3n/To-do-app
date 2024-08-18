@@ -68,6 +68,12 @@
       "languageVersion": "3.3"
     },
     {
+      "name": "flutter_dotenv",
+      "rootUri": "file:///C:/Users/ZAFARULLAH/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_dotenv-5.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_lints",
       "rootUri": "file:///C:/Users/ZAFARULLAH/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_lints-2.0.3",
       "packageUri": "lib/",
@@ -80,6 +86,18 @@
       "languageVersion": "3.3"
     },
     {
+      "name": "flutter_web_plugins",
+      "rootUri": "file:///C:/flutter/flutter_windows_3.22.3-stable/flutter/packages/flutter_web_plugins",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "fluttertoast",
+      "rootUri": "file:///C:/Users/ZAFARULLAH/AppData/Local/Pub/Cache/hosted/pub.dev/fluttertoast-8.2.8",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "google_fonts",
       "rootUri": "file:///C:/Users/ZAFARULLAH/AppData/Local/Pub/Cache/hosted/pub.dev/google_fonts-6.2.0",
       "packageUri": "lib/",
@@ -87,9 +105,9 @@
     },
     {
       "name": "http",
-      "rootUri": "file:///C:/Users/ZAFARULLAH/AppData/Local/Pub/Cache/hosted/pub.dev/http-1.2.0",
+      "rootUri": "file:///C:/Users/ZAFARULLAH/AppData/Local/Pub/Cache/hosted/pub.dev/http-1.2.2",
       "packageUri": "lib/",
-      "languageVersion": "3.2"
+      "languageVersion": "3.3"
     },
     {
       "name": "http_parser",
@@ -279,9 +297,9 @@
     },
     {
       "name": "web",
-      "rootUri": "file:///C:/Users/ZAFARULLAH/AppData/Local/Pub/Cache/hosted/pub.dev/web-0.3.0",
+      "rootUri": "file:///C:/Users/ZAFARULLAH/AppData/Local/Pub/Cache/hosted/pub.dev/web-1.0.0",
       "packageUri": "lib/",
-      "languageVersion": "3.2"
+      "languageVersion": "3.4"
     },
     {
       "name": "xdg_directories",
@@ -296,7 +314,7 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2024-08-17T03:20:04.426247Z",
+  "generated": "2024-08-18T17:55:21.674636Z",
   "generator": "pub",
   "generatorVersion": "3.4.4",
   "flutterRoot": "file:///C:/flutter/flutter_windows_3.22.3-stable/flutter",
