@@ -1,11 +1,13 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart'; // Import Fluttertoast
 import 'package:ver_1/components/google_loginbtn.dart';
 import 'package:ver_1/components/my_loginbtn.dart';
 import 'package:ver_1/components/my_textfield.dart';
-import 'package:ver_1/pages/provider_page.dart';
-import 'package:ver_1/pages/register_page.dart';
 import 'package:ver_1/pages/home_page.dart';
+import 'package:ver_1/pages/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,18 +17,121 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // text editing controllers
+  // Text editing controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  late FToast fToast;
 
-  void homeRoute(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => HomePage()),
+  // State variables for validation
+  String? emailError;
+  String? passwordError;
+
+  @override
+  void initState() {
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
+
+  // Function to show a toast message
+  void _showToast(String message, bool isSuccess) {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: isSuccess ? Colors.greenAccent : Colors.redAccent,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(isSuccess ? Icons.check : Icons.close, color: Colors.white),
+          SizedBox(width: 12.0),
+          Flexible(
+            child: Text(
+              message,
+              style: TextStyle(color: Colors.white),
+              overflow: TextOverflow.visible,
+            ),
+          ),
+        ],
+      ),
+    );
+
+    fToast.showToast(
+      child: toast,
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: Duration(seconds: 3),
     );
   }
 
-  void registerRoute(BuildContext context) {
+  // Function to handle user login
+  Future<void> loginUser() async {
+    // Reset error messages
+    setState(() {
+      emailError = null;
+      passwordError = null;
+    });
+
+    // Validate inputs
+    bool isValid = true;
+
+    if (emailController.text.isEmpty ||
+        !RegExp(r'^[\w\.\-]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$').hasMatch(emailController.text)) {
+      setState(() {
+        emailError = 'Invalid email address.';
+      });
+      isValid = false;
+    }
+
+    if (passwordController.text.isEmpty) {
+      setState(() {
+        passwordError = 'Password is required.';
+      });
+      isValid = false;
+    }
+
+    if (!isValid) {
+      return;
+    }
+
+    final String baseUrl = dotenv.env['BASE_URL']!;
+    final url = '$baseUrl/api/authentication/login';
+
+    print("Request made to login URL: $url");
+    final response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'username': emailController.text,
+        'password': passwordController.text,
+      }),
+    );
+
+    print("Login response: ${response.statusCode}");
+    print("Response Body: ${response.body}");
+
+    if (response.statusCode == 200) {
+      // Decode the response
+      final responseData = jsonDecode(response.body);
+
+      // Display success toast
+      _showToast("Login Successful. Welcome, ${responseData['firstName']} ${responseData['lastName']}", true);
+
+      // Navigate to home page
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } else {
+      // Display error toast
+      _showToast("Login Failed. Please check your credentials and try again.", false);
+    }
+  }
+
+  // Function to navigate to the Register Page
+  void registerRoute() {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => SignUp()),
@@ -45,15 +150,16 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 const SizedBox(height: 50),
 
-                //logo
+                // Logo
                 const Icon(
                   Icons.lock,
                   size: 100,
                   color: Colors.black,
                 ),
 
-                //welcome back
                 const SizedBox(height: 50),
+
+                // Welcome text
                 const Text(
                   'Welcome to To Do',
                   style: TextStyle(
@@ -62,24 +168,48 @@ class _LoginPageState extends State<LoginPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+
                 const SizedBox(height: 25),
 
-                //Username TextField
+                // Username TextField
                 MyTextField(
-                    controller: emailController,
-                    hintText: 'Email',
-                    obsecureText: false),
+                  controller: emailController,
+                  hintText: 'Email',
+                  obsecureText: false,
+                ),
+                if (emailError != null) // Show email error if any
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        emailError!,
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  ),
                 const SizedBox(height: 10),
 
-                //password TextField
+                // Password TextField
                 MyTextField(
-                    controller: passwordController,
-                    hintText: 'Password',
-                    obsecureText: true),
-
+                  controller: passwordController,
+                  hintText: 'Password',
+                  obsecureText: true,
+                ),
+                if (passwordError != null) // Show password error if any
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        passwordError!,
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  ),
                 const SizedBox(height: 10),
 
-                //forgot password
+                // Forgot password
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
@@ -95,15 +225,15 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 25),
 
-                //login button
+                // Login button
                 MyLoginBtn(
-                  onTap: () => registerRoute(context),
+                  onTap: () => loginUser(),
                   buttonText: 'Login',
                 ),
 
                 const SizedBox(height: 30),
 
-                //continue with
+                // Continue with text
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
@@ -133,21 +263,25 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 15),
 
-                GoogleLoginBtn(
-                    onTap: () => homeRoute(context),
-                    buttonText: 'Login with Google'),
+                // // Google login button
+                // GoogleLoginBtn(
+                //   onTap: () => homeRoute(context),
+                //   buttonText: 'Login with Google',
+                // ),
 
                 const SizedBox(height: 25),
 
-                //register
+                // Register now text
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Don\'t have an account?',
-                        style: TextStyle(color: Colors.black)),
+                    const Text(
+                      'Don\'t have an account?',
+                      style: TextStyle(color: Colors.black),
+                    ),
                     const SizedBox(width: 5),
                     InkWell(
-                      onTap: () => registerRoute(context),
+                      onTap: () => registerRoute(),
                       child: const Text(
                         'Register Now',
                         style: TextStyle(

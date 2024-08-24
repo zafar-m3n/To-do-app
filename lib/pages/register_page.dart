@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:ver_1/pages/login_page.dart';
 
 class SignUp extends StatefulWidget {
   SignUp({super.key});
@@ -74,35 +75,42 @@ class _SignUpState extends State<SignUp> {
 
     bool isValid = true;
 
-    if (firstNameController.text.isEmpty || firstNameController.text.length < 3 || firstNameController.text.length > 15) {
+    if (firstNameController.text.isEmpty ||
+        firstNameController.text.length < 3 ||
+        firstNameController.text.length > 15) {
       setState(() {
         firstNameError = 'First name must be at least 3 and at most 15 characters.';
       });
       isValid = false;
     }
 
-    if (lastNameController.text.isEmpty || lastNameController.text.length < 3 || lastNameController.text.length > 15) {
+    if (lastNameController.text.isEmpty ||
+        lastNameController.text.length < 3 ||
+        lastNameController.text.length > 15) {
       setState(() {
         lastNameError = 'Last name must be at least 3 and at most 15 characters.';
       });
       isValid = false;
     }
 
-    if (emailController.text.isEmpty || !RegExp(r'^[\w\.\-]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$').hasMatch(emailController.text)) {
+    if (emailController.text.isEmpty ||
+        !RegExp(r'^[\w\.\-]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$')
+            .hasMatch(emailController.text)) {
       setState(() {
         emailError = 'Invalid email address.';
       });
       isValid = false;
     }
 
-    if (newpasswordController.text.isEmpty || 
-        newpasswordController.text.length < 6 || 
+    if (newpasswordController.text.isEmpty ||
+        newpasswordController.text.length < 6 ||
         newpasswordController.text.length > 15 ||
-        !RegExp(r'(?=.*[A-Z])').hasMatch(newpasswordController.text) || 
-        !RegExp(r'(?=.*[!@#$%^&*(),.?":{}|<>])').hasMatch(newpasswordController.text) 
-    ) {
+        !RegExp(r'(?=.*[A-Z])').hasMatch(newpasswordController.text) ||
+        !RegExp(r'(?=.*[!@#$%^&*(),.?":{}|<>])')
+            .hasMatch(newpasswordController.text)) {
       setState(() {
-        passwordError = 'Password must be at least 6 and at most 15 characters, include at least one uppercase letter and one non-alphanumeric character.';
+        passwordError =
+            'Password must be at least 6 and at most 15 characters, include at least one uppercase letter and one non-alphanumeric character.';
       });
       isValid = false;
     }
@@ -132,7 +140,11 @@ class _SignUpState extends State<SignUp> {
 
     if (response.statusCode == 200) {
       _showToast("Registration successful", true);
-      _showToast("${response.body}", true);
+      
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
     } else {
       _showToast("Registration unsuccessful", false);
       _showToast("${response.body}", false);
