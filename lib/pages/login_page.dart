@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart'; // Import Fluttertoast
+import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // Import Secure Storage
 import 'package:ver_1/components/google_loginbtn.dart';
 import 'package:ver_1/components/my_loginbtn.dart';
 import 'package:ver_1/components/my_textfield.dart';
@@ -17,12 +18,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // Text editing controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final FlutterSecureStorage secureStorage = FlutterSecureStorage(); 
   late FToast fToast;
 
-  // State variables for validation
   String? emailError;
   String? passwordError;
 
@@ -33,7 +33,6 @@ class _LoginPageState extends State<LoginPage> {
     fToast.init(context);
   }
 
-  // Function to show a toast message
   void _showToast(String message, bool isSuccess) {
     Widget toast = Container(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
@@ -116,16 +115,17 @@ class _LoginPageState extends State<LoginPage> {
       // Decode the response
       final responseData = jsonDecode(response.body);
 
-      // Display success toast
-      _showToast("Login Successful. Welcome, ${responseData['firstName']} ${responseData['lastName']}", true);
+      // Store the entire response securely
+      await secureStorage.write(key: 'user_data', value: jsonEncode(responseData));
 
-      // Navigate to home page
+      // Display success toast
+      _showToast("Login Successful.", true);
+      
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
       );
     } else {
-      // Display error toast
       _showToast("Login Failed. Please check your credentials and try again.", false);
     }
   }
