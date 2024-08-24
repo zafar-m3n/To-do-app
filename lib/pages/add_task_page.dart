@@ -8,37 +8,61 @@ class Add_Screen extends StatefulWidget {
 }
 
 class _Add_ScreenState extends State<Add_Screen> {
-  final title = TextEditingController();
-  final description = TextEditingController();
+  final titleController = TextEditingController();
+  final descriptionController = TextEditingController();
+  final taskCodeController = TextEditingController(text: 'T-001');
 
   FocusNode _focusNode1 = FocusNode();
   FocusNode _focusNode2 = FocusNode();
-  int indexx = 0;
-
   String _selectedPriority = 'Medium';
   DateTime? _selectedDate;
+  String _selectedStatus = 'Pending';
+
+  final Color _borderColor = Colors.grey;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+        backgroundColor: Colors.blue.shade400,
+        title: Text('Add Task'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      backgroundColor: Colors.grey[200],
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: SingleChildScrollView(  // Makes the content scrollable
+          padding: const EdgeInsets.all(16.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              _buildLabel('Task Code'),
+              _buildTextField(taskCodeController, isEnabled: false),
               SizedBox(height: 20),
-              title_widgets(),
+              _buildLabel('Title'),
+              _buildTextField(titleController, focusNode: _focusNode1),
               SizedBox(height: 20),
-              Description_widget(),
+              _buildLabel('Description'),
+              _buildTextField(
+                descriptionController,
+                focusNode: _focusNode2,
+                maxLines: 3,
+              ),
               SizedBox(height: 20),
-              priorityDropdown(),
+              _buildLabel('Priority'),
+              _buildPriorityDropdown(),
               SizedBox(height: 20),
-              datePicker(),
+              _buildLabel('Due Date'),
+              _buildDatePicker(),
               SizedBox(height: 20),
-              imagess(),
+              _buildLabel('Status'),
+              _buildStatusDropdown(),
               SizedBox(height: 20),
-              button(),
+              _buildButtonRow(),
             ],
           ),
         ),
@@ -46,216 +70,178 @@ class _Add_ScreenState extends State<Add_Screen> {
     );
   }
 
-  Widget button() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).colorScheme.background,
-            minimumSize: Size(170, 48),
-          ),
-          onPressed: () {
-            Null;
-          },
-          child: Text('add task'),
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red,
-            minimumSize: Size(170, 48),
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text('Cancel'),
-        ),
-      ],
+  Widget _buildLabel(String label) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5.0),
+      child: Text(
+        label,
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey[700]),
+      ),
     );
   }
 
-  Container imagess() {
+  Widget _buildTextField(TextEditingController controller,
+      {bool isEnabled = true, FocusNode? focusNode, int maxLines = 1}) {
+    return TextField(
+      controller: controller,
+      focusNode: focusNode,
+      enabled: isEnabled,
+      maxLines: maxLines,
+      style: TextStyle(fontSize: 18, color: isEnabled ? Colors.black : Colors.grey),
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            color: _borderColor,
+          ),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            color: _borderColor,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            color: _borderColor,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPriorityDropdown() {
     return Container(
-      height: 180,
-      child: ListView.builder(
-        itemCount: 3,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                indexx = index;
-              });
-            },
-            child: Padding(
-              padding: EdgeInsets.only(left: index == 0 ? 7 : 0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    width: 2,
-                    color: indexx == index
-                        ? Theme.of(context).colorScheme.background
-                        : Colors.grey,
-                  ),
-                ),
-                width: 140,
-                margin: EdgeInsets.all(8),
-                child: Column(
-                  children: [
-                    Image.asset('images/${index}.png'),
-                  ],
-                ),
-              ),
-            ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: _borderColor, width: 1.5),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      child: DropdownButtonFormField<String>(
+        value: _selectedPriority,
+        decoration: InputDecoration(
+          border: InputBorder.none, // No default border
+        ),
+        items: ['High', 'Medium', 'Low'].map((String priority) {
+          return DropdownMenuItem<String>(
+            value: priority,
+            child: Text(priority),
           );
+        }).toList(),
+        onChanged: (String? newValue) {
+          setState(() {
+            _selectedPriority = newValue!;
+          });
+        },
+        icon: Icon(Icons.arrow_drop_down, color: Colors.grey), // Custom dropdown icon
+      ),
+    );
+  }
+
+  Widget _buildStatusDropdown() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: _borderColor, width: 1.5),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      child: DropdownButtonFormField<String>(
+        value: _selectedStatus,
+        decoration: InputDecoration(
+          border: InputBorder.none, // No default border
+        ),
+        items: ['Pending', 'Completed'].map((String status) {
+          return DropdownMenuItem<String>(
+            value: status,
+            child: Text(status),
+          );
+        }).toList(),
+        onChanged: (String? newValue) {
+          setState(() {
+            _selectedStatus = newValue!;
+          });
+        },
+        icon: Icon(Icons.arrow_drop_down, color: Colors.grey), // Custom dropdown icon
+      ),
+    );
+  }
+
+  Widget _buildDatePicker() {
+    return InputDecorator(
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            color: _borderColor,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            color: _borderColor,
+          ),
+        ),
+      ),
+      child: ListTile(
+        contentPadding: EdgeInsets.zero,
+        title: Text(
+          _selectedDate == null
+              ? 'Select Due Date'
+              : '${_selectedDate!.toLocal().toString().split(' ')[0]}',
+          style: TextStyle(fontSize: 16, color: Colors.black),
+        ),
+        trailing: Icon(Icons.calendar_today, color: Colors.grey),
+        onTap: () async {
+          DateTime? picked = await showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2020),
+            lastDate: DateTime(2101),
+          );
+          if (picked != null && picked != _selectedDate) {
+            setState(() {
+              _selectedDate = picked;
+            });
+          }
         },
       ),
     );
   }
 
-  Widget priorityDropdown() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: DropdownButtonFormField<String>(
-          value: _selectedPriority,
-          items: ['High', 'Medium', 'Low'].map((String priority) {
-            return DropdownMenuItem<String>(
-              value: priority,
-              child: Text(priority),
-            );
-          }).toList(),
-          onChanged: (String? newValue) {
-            setState(() {
-              _selectedPriority = newValue!;
-            });
-          },
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: Color(0xffc5c5c5),
-                width: 2.0,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.background,
-                width: 2.0,
-              ),
-            ),
+  Widget _buildButtonRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue.shade400,
+            minimumSize: Size(150, 50),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget datePicker() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: ListTile(
-          title: Text(_selectedDate == null
-              ? 'Select Due Date'
-              : 'Due Date: ${_selectedDate!.toLocal()}'.split(' ')[0]),
-          trailing: Icon(Icons.calendar_today),
-          onTap: () async {
-            DateTime? picked = await showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(2020),
-              lastDate: DateTime(2101),
-            );
-            if (picked != null && picked != _selectedDate) {
-              setState(() {
-                _selectedDate = picked;
-              });
-            }
+          onPressed: () {
+            // Add task functionality
           },
+          child: Text('Add Task', style: TextStyle(color: Colors.white)),
         ),
-      ),
-    );
-  }
-
-  Widget title_widgets() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: TextField(
-          controller: title,
-          focusNode: _focusNode1,
-          style: TextStyle(fontSize: 18, color: Colors.black),
-          decoration: InputDecoration(
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-              hintText: 'title',
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                  color: Color(0xffc5c5c5),
-                  width: 2.0,
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.background,
-                  width: 2.0,
-                ),
-              )),
-        ),
-      ),
-    );
-  }
-
-  Padding Description_widget() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: TextField(
-          maxLines: 3,
-          controller: description,
-          focusNode: _focusNode2,
-          style: TextStyle(fontSize: 18, color: Colors.black),
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            hintText: 'description',
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: Color(0xffc5c5c5),
-                width: 2.0,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.background,
-                width: 2.0,
-              ),
-            ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+            minimumSize: Size(150, 50),
           ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Cancel', style: TextStyle(color: Colors.white)),
         ),
-      ),
+      ],
     );
   }
 }
