@@ -135,9 +135,6 @@ class _SignUpState extends State<SignUp> {
       }),
     );
 
-    print("Registration response: ${response.statusCode}");
-    print("Response Body: ${response.body}");
-
     if (response.statusCode == 200) {
       _showToast("Registration successful", true);
       

@@ -95,8 +95,7 @@ class _LoginPageState extends State<LoginPage> {
 
     final String baseUrl = dotenv.env['BASE_URL']!;
     final url = '$baseUrl/api/authentication/login';
-
-    print("Request made to login URL: $url");
+    
     final response = await http.post(
       Uri.parse(url),
       headers: <String, String>{
@@ -108,21 +107,17 @@ class _LoginPageState extends State<LoginPage> {
       }),
     );
 
-    print("Login response: ${response.statusCode}");
-    print("Response Body: ${response.body}");
-
     if (response.statusCode == 200) {
       // Decode the response
       final responseData = jsonDecode(response.body);
 
       // Store the entire response securely
       await secureStorage.write(key: 'user_data', value: jsonEncode(responseData));
-      await secureStorage.write(key: 'isLoggedIn', value: 'true'); // Store login status
+      await secureStorage.write(key: 'isLoggedIn', value: 'true');
 
       // Display success toast
       _showToast("Login Successful.", true);
 
-      // Navigate to home page without allowing back navigation
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
@@ -131,8 +126,7 @@ class _LoginPageState extends State<LoginPage> {
       _showToast("Login Failed. Please check your credentials and try again.", false);
     }
   }
-
-  // Function to navigate to the Register Page
+  
   void registerRoute() {
     Navigator.push(
       context,
