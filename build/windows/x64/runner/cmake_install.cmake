@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/Sandunil-To-do-list/to_do_ver_1/windows/runner
+# Install script for directory: C:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/To-do-list/to_do/windows/runner
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

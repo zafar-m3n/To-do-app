@@ -1,28 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\cpp_client_wrapper\core_implementations.cc">
+    <ClCompile Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\cpp_client_wrapper\core_implementations.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\cpp_client_wrapper\standard_codec.cc">
+    <ClCompile Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\cpp_client_wrapper\standard_codec.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\cpp_client_wrapper\flutter_engine.cc">
+    <ClCompile Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\cpp_client_wrapper\flutter_engine.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\cpp_client_wrapper\flutter_view_controller.cc">
+    <ClCompile Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\cpp_client_wrapper\flutter_view_controller.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\CMakeLists.txt" />
+    <CustomBuild Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CMake Rules">
-      <UniqueIdentifier>{32EA1D6E-9F43-3D3D-B61C-CAF14126FED6}</UniqueIdentifier>
+      <UniqueIdentifier>{D20B407F-6854-35F9-A1DE-F820325F6AF7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{1BAF4088-803E-37BA-BCBE-A391053C2F01}</UniqueIdentifier>
+      <UniqueIdentifier>{7B382FC4-2DD0-3B9A-9321-0F867EF4B24E}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

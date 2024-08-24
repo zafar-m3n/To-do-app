@@ -2,13 +2,16 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\build\windows\x64\x64\Debug\ZERO_CHECK</FullPath>
+      <FullPath>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\build\windows\x64\x64\Debug\ZERO_CHECK</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\build\windows\x64\flutter\x64\Debug\flutter_assemble</FullPath>
+      <FullPath>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\build\windows\x64\flutter\x64\Debug\flutter_assemble</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\build\windows\x64\runner\Debug\ver_1.exe</FullPath>
+      <FullPath>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\build\windows\x64\plugins\flutter_secure_storage_windows\Debug\flutter_secure_storage_windows_plugin.dll</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\build\windows\x64\runner\Debug\ver_1.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

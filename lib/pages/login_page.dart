@@ -20,7 +20,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final FlutterSecureStorage secureStorage = FlutterSecureStorage(); 
+  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
   late FToast fToast;
 
   String? emailError;
@@ -117,11 +117,13 @@ class _LoginPageState extends State<LoginPage> {
 
       // Store the entire response securely
       await secureStorage.write(key: 'user_data', value: jsonEncode(responseData));
+      await secureStorage.write(key: 'isLoggedIn', value: 'true'); // Store login status
 
       // Display success toast
       _showToast("Login Successful.", true);
-      
-      Navigator.push(
+
+      // Navigate to home page without allowing back navigation
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
       );
@@ -263,7 +265,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 15),
 
-                // // Google login button
+                // Google login button (commented out if not needed)
                 // GoogleLoginBtn(
                 //   onTap: () => homeRoute(context),
                 //   buttonText: 'Login with Google',

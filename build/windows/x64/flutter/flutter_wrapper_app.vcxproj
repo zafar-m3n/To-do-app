@@ -18,7 +18,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{F34BD089-D105-3EF1-8A2A-3910D4C3CE8E}</ProjectGuid>
+    <ProjectGuid>{17D4180C-3ACD-347B-A873-509A0C081D15}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
     <Platform>x64</Platform>
@@ -50,22 +50,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\build\windows\x64\flutter\Debug\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\build\windows\x64\flutter\Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">flutter_wrapper_app.dir\Debug\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">flutter_wrapper_app</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.lib</TargetExt>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\build\windows\x64\flutter\Profile\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\build\windows\x64\flutter\Profile\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">flutter_wrapper_app.dir\Profile\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">flutter_wrapper_app</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">.lib</TargetExt>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\build\windows\x64\flutter\Release\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\build\windows\x64\flutter\Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">flutter_wrapper_app.dir\Release\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">flutter_wrapper_app</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.lib</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -86,10 +86,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;_HAS_EXCEPTIONS=0;UNICODE;_UNICODE;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -102,7 +102,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <DisableSpecificWarnings>"4100"</DisableSpecificWarnings>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -123,10 +123,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_HAS_EXCEPTIONS=0;UNICODE;_UNICODE;CMAKE_INTDIR=\"Profile\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -139,7 +139,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <DisableSpecificWarnings>"4100"</DisableSpecificWarnings>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -160,10 +160,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_HAS_EXCEPTIONS=0;UNICODE;_UNICODE;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\cpp_client_wrapper\include;C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -175,11 +175,11 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\CMakeLists.txt">
+    <CustomBuild Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\CMakeLists.txt">
       <UseUtf8Encoding>Always</UseUtf8Encoding>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/Sandunil-To-do-list/to_do_ver_1/windows/flutter/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/To-do-list/to_do/windows/flutter/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
-"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/Sandunil-To-do-list/to_do_ver_1/windows -BC:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/Sandunil-To-do-list/to_do_ver_1/build/windows/x64 --check-stamp-file C:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/Sandunil-To-do-list/to_do_ver_1/build/windows/x64/flutter/CMakeFiles/generate.stamp
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/To-do-list/to_do/windows -BC:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/To-do-list/to_do/build/windows/x64 --check-stamp-file C:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/To-do-list/to_do/build/windows/x64/flutter/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -187,12 +187,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\generated_config.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\build\windows\x64\flutter\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\generated_config.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\build\windows\x64\flutter\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">Building Custom Rule C:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/Sandunil-To-do-list/to_do_ver_1/windows/flutter/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">Building Custom Rule C:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/To-do-list/to_do/windows/flutter/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">setlocal
-"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/Sandunil-To-do-list/to_do_ver_1/windows -BC:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/Sandunil-To-do-list/to_do_ver_1/build/windows/x64 --check-stamp-file C:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/Sandunil-To-do-list/to_do_ver_1/build/windows/x64/flutter/CMakeFiles/generate.stamp
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/To-do-list/to_do/windows -BC:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/To-do-list/to_do/build/windows/x64 --check-stamp-file C:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/To-do-list/to_do/build/windows/x64/flutter/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -200,12 +200,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\generated_config.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\build\windows\x64\flutter\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\generated_config.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\build\windows\x64\flutter\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/Sandunil-To-do-list/to_do_ver_1/windows/flutter/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/To-do-list/to_do/windows/flutter/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
-"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/Sandunil-To-do-list/to_do_ver_1/windows -BC:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/Sandunil-To-do-list/to_do_ver_1/build/windows/x64 --check-stamp-file C:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/Sandunil-To-do-list/to_do_ver_1/build/windows/x64/flutter/CMakeFiles/generate.stamp
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/To-do-list/to_do/windows -BC:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/To-do-list/to_do/build/windows/x64 --check-stamp-file C:/Users/ZAFARULLAH/Downloads/Freelance-Assignments/To-do-list/to_do/build/windows/x64/flutter/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -213,26 +213,26 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\generated_config.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\build\windows\x64\flutter\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\generated_config.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\build\windows\x64\flutter\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\cpp_client_wrapper\core_implementations.cc" />
-    <ClCompile Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\cpp_client_wrapper\standard_codec.cc" />
-    <ClCompile Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\cpp_client_wrapper\flutter_engine.cc" />
-    <ClCompile Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\windows\flutter\ephemeral\cpp_client_wrapper\flutter_view_controller.cc" />
+    <ClCompile Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\cpp_client_wrapper\core_implementations.cc" />
+    <ClCompile Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\cpp_client_wrapper\standard_codec.cc" />
+    <ClCompile Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\cpp_client_wrapper\flutter_engine.cc" />
+    <ClCompile Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\windows\flutter\ephemeral\cpp_client_wrapper\flutter_view_controller.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\build\windows\x64\ZERO_CHECK.vcxproj">
-      <Project>{2E03445E-86CC-33F1-9AE1-BF070C4BD326}</Project>
+    <ProjectReference Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\build\windows\x64\ZERO_CHECK.vcxproj">
+      <Project>{A16C717F-2264-3DA7-A1EB-8F6A8AB3B2D3}</Project>
       <Name>ZERO_CHECK</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
-    <ProjectReference Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\build\windows\x64\flutter\flutter_assemble.vcxproj">
-      <Project>{458A2C6E-A78D-368D-866E-852AEBDDBE78}</Project>
+    <ProjectReference Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\build\windows\x64\flutter\flutter_assemble.vcxproj">
+      <Project>{1B222F31-7324-3514-AEEC-6B280BBE3A4C}</Project>
       <Name>flutter_assemble</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>

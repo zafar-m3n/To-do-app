@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CustomBuild Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\Sandunil-To-do-list\to_do_ver_1\build\windows\x64\CMakeFiles\77fe73ae0dc131be3728162c68429758\INSTALL_force.rule">
+    <CustomBuild Include="C:\Users\ZAFARULLAH\Downloads\Freelance-Assignments\To-do-list\to_do\build\windows\x64\CMakeFiles\842a33486e62a12528f67cd6b0b2bf79\INSTALL_force.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CMake Rules">
-      <UniqueIdentifier>{32EA1D6E-9F43-3D3D-B61C-CAF14126FED6}</UniqueIdentifier>
+      <UniqueIdentifier>{D20B407F-6854-35F9-A1DE-F820325F6AF7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
