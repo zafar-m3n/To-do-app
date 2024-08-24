@@ -2,11 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:fluttertoast/fluttertoast.dart'; // Import Fluttertoast
-import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // Import Secure Storage
-import 'package:ver_1/components/google_loginbtn.dart';
-import 'package:ver_1/components/my_loginbtn.dart';
-import 'package:ver_1/components/my_textfield.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ver_1/pages/home_page.dart';
 import 'package:ver_1/pages/register_page.dart';
 
@@ -63,15 +60,12 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // Function to handle user login
   Future<void> loginUser() async {
-    // Reset error messages
     setState(() {
       emailError = null;
       passwordError = null;
     });
 
-    // Validate inputs
     bool isValid = true;
 
     if (emailController.text.isEmpty ||
@@ -95,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
 
     final String baseUrl = dotenv.env['BASE_URL']!;
     final url = '$baseUrl/api/authentication/login';
-    
+
     final response = await http.post(
       Uri.parse(url),
       headers: <String, String>{
@@ -108,14 +102,11 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     if (response.statusCode == 200) {
-      // Decode the response
       final responseData = jsonDecode(response.body);
 
-      // Store the entire response securely
       await secureStorage.write(key: 'user_data', value: jsonEncode(responseData));
       await secureStorage.write(key: 'isLoggedIn', value: 'true');
 
-      // Display success toast
       _showToast("Login Successful.", true);
 
       Navigator.pushReplacement(
@@ -126,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
       _showToast("Login Failed. Please check your credentials and try again.", false);
     }
   }
-  
+
   void registerRoute() {
     Navigator.push(
       context,
@@ -137,161 +128,216 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.grey[200],
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 50),
+                SizedBox(height: 60),
 
-                // Logo
-                const Icon(
+                Icon(
                   Icons.lock,
                   size: 100,
-                  color: Colors.black,
+                  color: Colors.blue.shade400,
                 ),
 
-                const SizedBox(height: 50),
+                SizedBox(height: 50),
 
-                // Welcome text
-                const Text(
+                Text(
                   'Welcome to To Do',
                   style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.black,
+                    fontSize: 26,
+                    color: Colors.blue.shade400,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
 
-                const SizedBox(height: 25),
+                SizedBox(height: 40),
 
                 // Username TextField
-                MyTextField(
+                _buildTextField(
                   controller: emailController,
                   hintText: 'Email',
-                  obsecureText: false,
+                  isObscure: false,
+                  errorMessage: emailError,
                 ),
-                if (emailError != null) // Show email error if any
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        emailError!,
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ),
-                  ),
-                const SizedBox(height: 10),
+
+                SizedBox(height: 20),
 
                 // Password TextField
-                MyTextField(
+                _buildTextField(
                   controller: passwordController,
                   hintText: 'Password',
-                  obsecureText: true,
+                  isObscure: true,
+                  errorMessage: passwordError,
                 ),
-                if (passwordError != null) // Show password error if any
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        passwordError!,
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ),
-                  ),
-                const SizedBox(height: 10),
+
+                SizedBox(height: 10),
 
                 // Forgot password
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Forgot Password?',
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
-                    ],
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    'Forgot Password?',
+                    style: TextStyle(color: Colors.grey[600]),
                   ),
                 ),
 
-                const SizedBox(height: 25),
+                SizedBox(height: 30),
 
                 // Login button
-                MyLoginBtn(
-                  onTap: () => loginUser(),
-                  buttonText: 'Login',
-                ),
+                _buildLoginButton('Login', Colors.blue.shade400, Colors.white, loginUser),
 
-                const SizedBox(height: 30),
+                SizedBox(height: 30),
 
                 // Continue with text
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey[400],
-                        ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        thickness: 0.5,
+                        color: Colors.grey[400],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          ' Or Continue with  ',
-                          style: TextStyle(color: Colors.grey[700]),
-                        ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Or Continue with',
+                        style: TextStyle(color: Colors.grey[700]),
                       ),
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey[400],
-                        ),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        thickness: 0.5,
+                        color: Colors.grey[400],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
 
-                const SizedBox(height: 15),
+                SizedBox(height: 20),
 
-                // Google login button (commented out if not needed)
-                // GoogleLoginBtn(
-                //   onTap: () => homeRoute(context),
-                //   buttonText: 'Login with Google',
-                // ),
+                // Google and Facebook login buttons
+                _buildSocialLoginButton('Login with Google', Icons.account_circle, Colors.white, Colors.black, () {
+                  // Google login functionality
+                }),
+                SizedBox(height: 15),
+                _buildSocialLoginButton('Login with Facebook', Icons.facebook, Colors.blue.shade800, Colors.white, () {
+                  // Facebook login functionality
+                }),
 
-                const SizedBox(height: 25),
+                SizedBox(height: 25),
 
                 // Register now text
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       'Don\'t have an account?',
                       style: TextStyle(color: Colors.black),
                     ),
-                    const SizedBox(width: 5),
+                    SizedBox(width: 5),
                     InkWell(
                       onTap: () => registerRoute(),
-                      child: const Text(
+                      child: Text(
                         'Register Now',
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: Colors.blue.shade400,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                    )
+                    ),
                   ],
                 )
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String hintText,
+    required bool isObscure,
+    String? errorMessage,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextField(
+          controller: controller,
+          obscureText: isObscure,
+          style: TextStyle(fontSize: 18, color: Colors.black),
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.white,
+            hintText: hintText,
+            contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                color: Colors.grey,
+                width: 1.5,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                color: Colors.blue.shade400,
+                width: 2.0,
+              ),
+            ),
+          ),
+        ),
+        if (errorMessage != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 5),
+            child: Text(
+              errorMessage,
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildLoginButton(String text, Color backgroundColor, Color textColor, VoidCallback onTap) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: backgroundColor,
+        minimumSize: Size(double.infinity, 50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      onPressed: onTap,
+      child: Text(
+        text,
+        style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 18),
+      ),
+    );
+  }
+
+  Widget _buildSocialLoginButton(
+      String text, IconData icon, Color backgroundColor, Color textColor, VoidCallback onTap) {
+    return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: backgroundColor,
+        minimumSize: Size(double.infinity, 50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      onPressed: onTap,
+      icon: Icon(icon, color: textColor, size: 24),
+      label: Text(
+        text,
+        style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 18),
       ),
     );
   }

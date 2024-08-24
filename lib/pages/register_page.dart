@@ -1,9 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:ver_1/components/google_loginbtn.dart';
-import 'package:ver_1/components/my_loginbtn.dart';
-import 'package:ver_1/components/my_textfield.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ver_1/pages/login_page.dart';
@@ -151,97 +148,67 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.grey[200],
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 50),
-                const Icon(Icons.lock, color: Colors.black, size: 100),
+                const Icon(Icons.lock, color: Colors.blue, size: 100),
                 const SizedBox(height: 50),
                 const Text(
                   'Let\'s get you Registered!',
                   style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
+                      fontSize: 24,
+                      color: Colors.blue,
                       fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 25),
-                MyTextField(
+
+                // First Name TextField
+                _buildTextField(
                   controller: firstNameController,
                   hintText: 'Enter your first name',
-                  obsecureText: false,
+                  errorMessage: firstNameError,
+                  isObscure: false,
                 ),
-                if (firstNameError != null)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        firstNameError!,
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ),
-                  ),
                 const SizedBox(height: 10),
-                MyTextField(
+
+                // Last Name TextField
+                _buildTextField(
                   controller: lastNameController,
                   hintText: 'Enter your last name',
-                  obsecureText: false,
+                  errorMessage: lastNameError,
+                  isObscure: false,
                 ),
-                if (lastNameError != null)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        lastNameError!,
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ),
-                  ),
                 const SizedBox(height: 10),
-                MyTextField(
+
+                // Email TextField
+                _buildTextField(
                   controller: emailController,
                   hintText: 'Enter your email',
-                  obsecureText: false,
+                  errorMessage: emailError,
+                  isObscure: false,
                 ),
-                if (emailError != null)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        emailError!,
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ),
-                  ),
                 const SizedBox(height: 10),
-                MyTextField(
+
+                // Password TextField
+                _buildTextField(
                   controller: newpasswordController,
                   hintText: 'Enter your new password',
-                  obsecureText: true,
+                  errorMessage: passwordError,
+                  isObscure: true,
                 ),
-                if (passwordError != null)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        passwordError!,
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ),
-                  ),
                 const SizedBox(height: 25),
-                MyLoginBtn(
-                  onTap: () => registerUser(),
-                  buttonText: 'Register',
-                ),
+
+                // Register button
+                _buildButton('Register', Colors.blue.shade400, Colors.white, registerUser),
+
                 const SizedBox(height: 30),
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
@@ -261,15 +228,128 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
                 const SizedBox(height: 15),
-                GoogleLoginBtn(
-                  onTap: () => Null, 
-                  buttonText: 'Register with Google',
+
+                // Google button
+                _buildSocialLoginButton('Register with Google', Icons.account_circle, Colors.white, Colors.black, () {
+                  // Google register functionality
+                }),
+
+                const SizedBox(height: 25),
+
+                // Redirect to Login text
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Already have an account?',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    const SizedBox(width: 5),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                        );
+                      },
+                      child: const Text(
+                        'Login',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+
                 const SizedBox(height: 25),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String hintText,
+    required bool isObscure,
+    String? errorMessage,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextField(
+          controller: controller,
+          obscureText: isObscure,
+          style: TextStyle(fontSize: 18, color: Colors.black),
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.white,
+            hintText: hintText,
+            contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                color: Colors.grey,
+                width: 1.5,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                color: Colors.blue.shade400,
+                width: 2.0,
+              ),
+            ),
+          ),
+        ),
+        if (errorMessage != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 5),
+            child: Text(
+              errorMessage,
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildButton(String text, Color backgroundColor, Color textColor, VoidCallback onTap) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: backgroundColor,
+        minimumSize: Size(double.infinity, 50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      onPressed: onTap,
+      child: Text(
+        text,
+        style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 18),
+      ),
+    );
+  }
+
+  Widget _buildSocialLoginButton(String text, IconData icon, Color backgroundColor, Color textColor, VoidCallback onTap) {
+    return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: backgroundColor,
+        minimumSize: Size(double.infinity, 50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(color: Colors.grey),
+        ),
+      ),
+      icon: Icon(icon, color: textColor),
+      onPressed: onTap,
+      label: Text(
+        text,
+        style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 18),
       ),
     );
   }

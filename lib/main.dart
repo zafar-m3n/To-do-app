@@ -5,14 +5,14 @@ import 'package:ver_1/pages/register_page.dart';
 import 'package:ver_1/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // Import Secure Storage
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize secure storage
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
-  
+
   // Check if the user is logged in
   String? isLoggedIn = await secureStorage.read(key: 'isLoggedIn');
 
@@ -39,12 +39,22 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Tick Off',
-      theme: Provider.of<ThemeProvider>(context).themeData,
+      theme: _buildThemeData(context),
       home: isLoggedIn ? HomePage() : LoginPage(),
       routes: {
         '/home': (context) => HomePage(),
         '/signup': (context) => SignUp(),
       },
+    );
+  }
+
+  ThemeData _buildThemeData(BuildContext context) {
+    return ThemeData(
+      primarySwatch: Colors.blue,
+      fontFamily: 'Poppins', // Set the default font family to 'Poppins'
+      textTheme: Theme.of(context).textTheme.apply(
+            fontFamily: 'Poppins',
+          ),
     );
   }
 }
