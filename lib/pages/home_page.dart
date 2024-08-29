@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:ver_1/pages/add_task_page.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:ver_1/pages/login_page.dart'; // Import LoginPage
+import 'package:ver_1/pages/login_page.dart';
+import 'package:ver_1/pages/add_task_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
   String firstName = "";
   String lastName = "";
-  bool show = true; // Always show the FAB for now
+  List<Map<String, dynamic>> tasks = [];
 
   @override
   void initState() {
@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
     _loadUserData();
   }
 
-  // Function to load user data from secure storage
+  // Function to load user data and fetch tasks
   Future<void> _loadUserData() async {
     String? userData = await secureStorage.read(key: 'user_data');
     if (userData != null) {
@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  // Function to fetch task list from API and show in a dialog box
+  // Function to fetch task list from API
   Future<void> _fetchTaskList() async {
     try {
       String? token = await secureStorage.read(key: 'user_data');
@@ -56,30 +56,27 @@ class _HomePageState extends State<HomePage> {
           },
         );
 
-        print("GET response: ${response.statusCode}");
-        print("GET Body: ${response.body}");
-
         if (response.statusCode == 200) {
-          _showResponseDialog(response.body);
+          setState(() {
+            tasks = List<Map<String, dynamic>>.from(jsonDecode(response.body));
+          });
         } else {
-          _showResponseDialog("Failed to load tasks. Status code: ${response.statusCode}");
+          _showErrorDialog("Failed to load tasks. Status code: ${response.statusCode}");
         }
       }
     } catch (e) {
-      _showResponseDialog("Error fetching task list: $e");
+      _showErrorDialog("Error fetching task list: $e");
     }
   }
 
-  // Function to show the response in a dialog box
-  void _showResponseDialog(String message) {
+  // Function to show error dialog
+  void _showErrorDialog(String message) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Task List Response"),
-          content: SingleChildScrollView(
-            child: Text(message),
-          ),
+          title: Text("Error"),
+          content: Text(message),
           actions: [
             TextButton(
               child: Text("OK"),
@@ -91,6 +88,20 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
+  }
+
+  // Function to map priority numbers to text
+  String _mapPriority(int priority) {
+    switch (priority) {
+      case 1:
+        return 'High';
+      case 2:
+        return 'Medium';
+      case 3:
+        return 'Low';
+      default:
+        return 'Unknown';
+    }
   }
 
   // Function to capitalize the first letter of a string
@@ -147,11 +158,8 @@ class _HomePageState extends State<HomePage> {
 
   // Function to handle user logout
   Future<void> _logout() async {
-    // Remove user data from secure storage
     await secureStorage.delete(key: 'user_data');
     await secureStorage.delete(key: 'isLoggedIn');
-    
-    // Redirect to login page
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
@@ -165,13 +173,13 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Colors.blue.shade400,
         elevation: 0,
-        automaticallyImplyLeading: false, // Remove the back button
+        automaticallyImplyLeading: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Hi $firstName', style: TextStyle(color: Colors.white)),
             GestureDetector(
-              onTap: _showProfilePopup, // Show profile popup when tapped
+              onTap: _showProfilePopup,
               child: Icon(Icons.account_circle, color: Colors.white, size: 30),
             ),
           ],
@@ -187,12 +195,86 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.blue.shade400,
         child: Icon(Icons.add),
       ),
-      body: Center(
-        child: Text(
-          'Welcome to the new HomePage!',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-      ),
+      body: tasks.isEmpty
+          ? Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              itemCount: tasks.length,
+              itemBuilder: (context, index) {
+                final task = tasks[index];
+                return Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  elevation: 2,
+                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${task['Task_Code']}: ${task['Task_Name']}',
+                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                task['Task_Description'],
+                                style: TextStyle(fontSize: 14, color: Colors.black54),
+                              ),
+                              SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: task['Task_Priority'] == 1
+                                          ? Colors.red.shade100
+                                          : task['Task_Priority'] == 2
+                                              ? Colors.orange.shade100
+                                              : Colors.green.shade100,
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Text(
+                                      _mapPriority(task['Task_Priority']),
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: task['Task_Priority'] == 1
+                                            ? Colors.red
+                                            : task['Task_Priority'] == 2
+                                                ? Colors.orange
+                                                : Colors.green,
+                                      ),
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Text(
+                                    'Due Date: ${task['Task_Due_Date']}',
+                                    style: TextStyle(fontSize: 12, color: Colors.black54),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Checkbox(
+                          value: task['Task_Complete_Status'],
+                          onChanged: (value) {
+                            setState(() {
+                              task['Task_Complete_Status'] = value!;
+                              // Optional: Add logic to update task status in backend if needed
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
     );
   }
 }
