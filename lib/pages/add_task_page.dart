@@ -1,4 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Add_Screen extends StatefulWidget {
   const Add_Screen({super.key});
@@ -10,7 +14,8 @@ class Add_Screen extends StatefulWidget {
 class _Add_ScreenState extends State<Add_Screen> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
-  final taskCodeController = TextEditingController(text: 'T-001');
+  final taskCodeController = TextEditingController(text: ''); // Set as empty string for new task
+  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
   FocusNode _focusNode1 = FocusNode();
   FocusNode _focusNode2 = FocusNode();
@@ -35,7 +40,7 @@ class _Add_ScreenState extends State<Add_Screen> {
       ),
       backgroundColor: Colors.grey[200],
       body: SafeArea(
-        child: SingleChildScrollView(  // Makes the content scrollable
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,7 +130,7 @@ class _Add_ScreenState extends State<Add_Screen> {
       child: DropdownButtonFormField<String>(
         value: _selectedPriority,
         decoration: InputDecoration(
-          border: InputBorder.none, // No default border
+          border: InputBorder.none,
         ),
         items: ['High', 'Medium', 'Low'].map((String priority) {
           return DropdownMenuItem<String>(
@@ -138,7 +143,7 @@ class _Add_ScreenState extends State<Add_Screen> {
             _selectedPriority = newValue!;
           });
         },
-        icon: Icon(Icons.arrow_drop_down, color: Colors.grey), // Custom dropdown icon
+        icon: Icon(Icons.arrow_drop_down, color: Colors.grey),
       ),
     );
   }
@@ -154,7 +159,7 @@ class _Add_ScreenState extends State<Add_Screen> {
       child: DropdownButtonFormField<String>(
         value: _selectedStatus,
         decoration: InputDecoration(
-          border: InputBorder.none, // No default border
+          border: InputBorder.none,
         ),
         items: ['Pending', 'Completed'].map((String status) {
           return DropdownMenuItem<String>(
@@ -167,7 +172,7 @@ class _Add_ScreenState extends State<Add_Screen> {
             _selectedStatus = newValue!;
           });
         },
-        icon: Icon(Icons.arrow_drop_down, color: Colors.grey), // Custom dropdown icon
+        icon: Icon(Icons.arrow_drop_down, color: Colors.grey),
       ),
     );
   }
@@ -227,7 +232,7 @@ class _Add_ScreenState extends State<Add_Screen> {
             minimumSize: Size(150, 50),
           ),
           onPressed: () {
-            // Add task functionality
+            _addTask(); // Call the function to add task
           },
           child: Text('Add Task', style: TextStyle(color: Colors.white)),
         ),
@@ -242,6 +247,76 @@ class _Add_ScreenState extends State<Add_Screen> {
           child: Text('Cancel', style: TextStyle(color: Colors.white)),
         ),
       ],
+    );
+  }
+
+  // Function to handle adding a task
+  Future<void> _addTask() async {
+    if (_selectedDate == null) {
+      _showErrorDialog('Please select a due date.');
+      return;
+    }
+
+    final String baseUrl = dotenv.env['BASE_URL']!;
+    final url = '$baseUrl/api/services/save-task';
+
+    // Prepare the task data
+    Map<String, dynamic> taskData = {
+      'SaveStatus': '1', // Assuming '1' indicates a new task save operation
+      'TaskCode': '', // Empty for a new task
+      'TaskName': titleController.text,
+      'TaskDescription': descriptionController.text,
+      'TaskPriority': _selectedPriority == 'High' ? '1' : _selectedPriority == 'Medium' ? '2' : '3',
+      'TaskDueDate': _selectedDate!.toIso8601String(),
+      'TaskCompleteStatus': _selectedStatus == 'Completed'
+    };
+
+    print("Creating new task. Task Data: $taskData");
+
+    try {
+      String? token = await secureStorage.read(key: 'user_data');
+      if (token != null) {
+        final decodedData = jsonDecode(token);
+        final jwtToken = decodedData['jwt'];
+
+        final response = await http.post(
+          Uri.parse(url),
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $jwtToken',
+          },
+          body: jsonEncode(taskData),
+        );
+
+        if (response.statusCode == 200) {
+          Navigator.pop(context, true); 
+        } else {
+          _showErrorDialog('Failed to add task. Status code: ${response.statusCode}');
+        }
+      }
+    } catch (e) {
+      _showErrorDialog('Error adding task: $e');
+    }
+  }
+
+  // Function to show error dialog
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Error"),
+          content: Text(message),
+          actions: [
+            TextButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

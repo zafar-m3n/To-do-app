@@ -49,6 +49,8 @@ class _HomePageState extends State<HomePage> {
         final String baseUrl = dotenv.env['BASE_URL']!;
         final url = '$baseUrl/api/services/get-task-list';
 
+        print("Getting Tasks from: $url");
+        
         final response = await http.get(
           Uri.parse(url),
           headers: {
@@ -187,11 +189,16 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          // Navigate to Add_Screen and refresh task list on return
+          final result = await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => Add_Screen()),
           );
+
+          if (result == true) {
+            _fetchTaskList();
+          }
         },
         backgroundColor: Colors.blue.shade400,
         child: Icon(Icons.add),
