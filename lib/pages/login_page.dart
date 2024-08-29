@@ -90,6 +90,8 @@ class _LoginPageState extends State<LoginPage> {
     final String baseUrl = dotenv.env['BASE_URL']!;
     final url = '$baseUrl/api/authentication/login';
 
+    print("Making request to $url");
+
     final response = await http.post(
       Uri.parse(url),
       headers: <String, String>{
