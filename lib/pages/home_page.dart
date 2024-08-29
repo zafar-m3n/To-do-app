@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:ver_1/pages/login_page.dart';
 import 'package:ver_1/pages/add_task_page.dart';
+import 'package:ver_1/pages/edit_task_page.dart'; // Import Edit_Screen
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -201,75 +202,87 @@ class _HomePageState extends State<HomePage> {
               itemCount: tasks.length,
               itemBuilder: (context, index) {
                 final task = tasks[index];
-                return Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  elevation: 2,
-                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${task['Task_Code']}: ${task['Task_Name']}',
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                task['Task_Description'],
-                                style: TextStyle(fontSize: 14, color: Colors.black54),
-                              ),
-                              SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                    decoration: BoxDecoration(
-                                      color: task['Task_Priority'] == 1
-                                          ? Colors.red.shade100
-                                          : task['Task_Priority'] == 2
-                                              ? Colors.orange.shade100
-                                              : Colors.green.shade100,
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                    child: Text(
-                                      _mapPriority(task['Task_Priority']),
-                                      style: TextStyle(
-                                        fontSize: 12,
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Edit_Screen(
+                          task: task, // Pass the task data to Edit_Screen
+                        ),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    elevation: 2,
+                    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${task['Task_Code']}: ${task['Task_Name']}',
+                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  task['Task_Description'],
+                                  style: TextStyle(fontSize: 14, color: Colors.black54),
+                                ),
+                                SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                      decoration: BoxDecoration(
                                         color: task['Task_Priority'] == 1
-                                            ? Colors.red
+                                            ? Colors.red.shade100
                                             : task['Task_Priority'] == 2
-                                                ? Colors.orange
-                                                : Colors.green,
+                                                ? Colors.orange.shade100
+                                                : Colors.green.shade100,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: Text(
+                                        _mapPriority(task['Task_Priority']),
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: task['Task_Priority'] == 1
+                                              ? Colors.red
+                                              : task['Task_Priority'] == 2
+                                                  ? Colors.orange
+                                                  : Colors.green,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    'Due Date: ${task['Task_Due_Date']}',
-                                    style: TextStyle(fontSize: 12, color: Colors.black54),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                    Spacer(),
+                                    Text(
+                                      'Due Date: ${task['Task_Due_Date']}',
+                                      style: TextStyle(fontSize: 12, color: Colors.black54),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Checkbox(
-                          value: task['Task_Complete_Status'],
-                          onChanged: (value) {
-                            setState(() {
-                              task['Task_Complete_Status'] = value!;
-                              // Optional: Add logic to update task status in backend if needed
-                            });
-                          },
-                        ),
-                      ],
+                          Checkbox(
+                            value: task['Task_Complete_Status'],
+                            onChanged: (value) {
+                              setState(() {
+                                task['Task_Complete_Status'] = value!;
+                                // Optional: Add logic to update task status in backend if needed
+                              });
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );
