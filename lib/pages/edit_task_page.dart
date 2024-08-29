@@ -1,4 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Edit_Screen extends StatefulWidget {
   final Map<String, dynamic> task;
@@ -20,6 +24,7 @@ class _Edit_ScreenState extends State<Edit_Screen> {
   String _selectedStatus = 'Pending';
 
   final Color _borderColor = Colors.grey;
+  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
   @override
   void initState() {
@@ -264,7 +269,7 @@ class _Edit_ScreenState extends State<Edit_Screen> {
             minimumSize: Size(150, 50),
           ),
           onPressed: () {
-            // Save task functionality
+            _editTask(); // Call the function to edit task
           },
           child: Text('Save Task', style: TextStyle(color: Colors.white)),
         ),
@@ -279,6 +284,76 @@ class _Edit_ScreenState extends State<Edit_Screen> {
           child: Text('Cancel', style: TextStyle(color: Colors.white)),
         ),
       ],
+    );
+  }
+
+  // Function to handle editing a task
+  Future<void> _editTask() async {
+    if (_selectedDate == null) {
+      _showErrorDialog('Please select a due date.');
+      return;
+    }
+
+    final String baseUrl = dotenv.env['BASE_URL']!;
+    final url = '$baseUrl/api/services/save-task';
+
+    // Prepare the task data for editing
+    Map<String, dynamic> taskData = {
+      'SaveStatus': '2', // '2' indicates an update operation
+      'TaskCode': taskCodeController.text, // Use the existing task code
+      'TaskName': titleController.text,
+      'TaskDescription': descriptionController.text,
+      'TaskPriority': _selectedPriority == 'High' ? '1' : _selectedPriority == 'Medium' ? '2' : '3',
+      'TaskDueDate': _selectedDate!.toIso8601String(),
+      'TaskCompleteStatus': _selectedStatus == 'Completed'
+    };
+
+    print("Editing task. Task Data: $taskData");
+
+    try {
+      String? token = await secureStorage.read(key: 'user_data');
+      if (token != null) {
+        final decodedData = jsonDecode(token);
+        final jwtToken = decodedData['jwt'];
+
+        final response = await http.post(
+          Uri.parse(url),
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $jwtToken',
+          },
+          body: jsonEncode(taskData),
+        );
+
+        if (response.statusCode == 200) {
+          Navigator.pop(context, true); // Navigate back with success flag
+        } else {
+          _showErrorDialog('Failed to update task. Status code: ${response.statusCode}');
+        }
+      }
+    } catch (e) {
+      _showErrorDialog('Error updating task: $e');
+    }
+  }
+
+  // Function to show error dialog
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Error"),
+          content: Text(message),
+          actions: [
+            TextButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -210,8 +210,9 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) {
                 final task = tasks[index];
                 return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
+                  onTap: () async {
+                    // Navigate to Edit_Screen and refresh task list on return
+                    final result = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => Edit_Screen(
@@ -219,6 +220,10 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     );
+
+                    if (result == true) {
+                      _fetchTaskList(); // Refresh the task list after editing
+                    }
                   },
                   child: Card(
                     shape: RoundedRectangleBorder(

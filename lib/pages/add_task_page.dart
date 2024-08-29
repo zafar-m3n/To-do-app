@@ -46,16 +46,17 @@ class _Add_ScreenState extends State<Add_Screen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildLabel('Task Code'),
-              _buildTextField(taskCodeController, isEnabled: false),
+              _buildTextField(taskCodeController, isEnabled: false, hintText: 'TSK-X'),
               SizedBox(height: 20),
               _buildLabel('Title'),
-              _buildTextField(titleController, focusNode: _focusNode1),
+              _buildTextField(titleController, focusNode: _focusNode1, hintText: 'Enter task title'),
               SizedBox(height: 20),
               _buildLabel('Description'),
               _buildTextField(
                 descriptionController,
                 focusNode: _focusNode2,
                 maxLines: 3,
+                hintText: 'Enter task description',
               ),
               SizedBox(height: 20),
               _buildLabel('Priority'),
@@ -86,7 +87,7 @@ class _Add_ScreenState extends State<Add_Screen> {
   }
 
   Widget _buildTextField(TextEditingController controller,
-      {bool isEnabled = true, FocusNode? focusNode, int maxLines = 1}) {
+      {bool isEnabled = true, FocusNode? focusNode, int maxLines = 1, String? hintText}) {
     return TextField(
       controller: controller,
       focusNode: focusNode,
@@ -94,6 +95,7 @@ class _Add_ScreenState extends State<Add_Screen> {
       maxLines: maxLines,
       style: TextStyle(fontSize: 18, color: isEnabled ? Colors.black : Colors.grey),
       decoration: InputDecoration(
+        hintText: hintText, // Set the hint text for placeholder
         filled: true,
         fillColor: Colors.white,
         contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
