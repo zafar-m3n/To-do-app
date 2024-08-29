@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
         final url = '$baseUrl/api/services/get-task-list';
 
         print("Getting Tasks from: $url");
-        
+
         final response = await http.get(
           Uri.parse(url),
           headers: {
@@ -69,6 +69,49 @@ class _HomePageState extends State<HomePage> {
       }
     } catch (e) {
       _showErrorDialog("Error fetching task list: $e");
+    }
+  }
+
+  Future<void> _deleteTask(Map<String, dynamic> task) async {
+    try {
+      String? token = await secureStorage.read(key: 'user_data');
+      if (token != null) {
+        final decodedData = jsonDecode(token);
+        final jwtToken = decodedData['jwt'];
+        final String baseUrl = dotenv.env['BASE_URL']!;
+        final url = '$baseUrl/api/services/save-task';
+
+        // Prepare the task data for deletion
+        Map<String, dynamic> requestData = {
+          'SaveStatus': '3', // '3' indicates a delete operation
+          'TaskCode': task['Task_Code'],
+          'TaskName': task['Task_Name'],
+          'TaskDescription': task['Task_Description'],
+          'TaskPriority': task['Task_Priority'].toString(),
+          'TaskDueDate': task['Task_Due_Date'],
+          'TaskCompleteStatus': task['Task_Complete_Status']
+        };
+
+        print("Deleting Task: $requestData");
+
+        final response = await http.post(
+          Uri.parse(url),
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $jwtToken',
+          },
+          body: jsonEncode(requestData),
+        );
+
+        if (response.statusCode == 200) {
+          print("Task deleted successfully ${response.body}");
+          _fetchTaskList();
+        } else {
+          _showErrorDialog("Failed to delete task. Status code: ${response.statusCode}");
+        }
+      }
+    } catch (e) {
+      _showErrorDialog("Error deleting task: $e");
     }
   }
 
@@ -233,65 +276,76 @@ class _HomePageState extends State<HomePage> {
                     margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Row(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // Task code and name on the left
+                              Expanded(
+                                child: Text(
                                   '${task['Task_Code']}: ${task['Task_Name']}',
                                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                 ),
-                                SizedBox(height: 8),
-                                Text(
-                                  task['Task_Description'],
-                                  style: TextStyle(fontSize: 14, color: Colors.black54),
-                                ),
-                                SizedBox(height: 8),
-                                Row(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                      decoration: BoxDecoration(
-                                        color: task['Task_Priority'] == 1
-                                            ? Colors.red.shade100
-                                            : task['Task_Priority'] == 2
-                                                ? Colors.orange.shade100
-                                                : Colors.green.shade100,
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      child: Text(
-                                        _mapPriority(task['Task_Priority']),
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: task['Task_Priority'] == 1
-                                              ? Colors.red
-                                              : task['Task_Priority'] == 2
-                                                  ? Colors.orange
-                                                  : Colors.green,
-                                        ),
-                                      ),
-                                    ),
-                                    Spacer(),
-                                    Text(
-                                      'Due Date: ${task['Task_Due_Date']}',
-                                      style: TextStyle(fontSize: 12, color: Colors.black54),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                              ),
+                              // Completed icon and delete button on the right
+                              Row(
+                                children: [
+                                  Icon(
+                                    task['Task_Complete_Status']
+                                        ? Icons.check_box
+                                        : Icons.check_box_outline_blank,
+                                    color: Colors.blue,
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.delete, color: Colors.red),
+                                    onPressed: () {
+                                      _deleteTask(task); // Call delete task with the entire task data
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                          Checkbox(
-                            value: task['Task_Complete_Status'],
-                            onChanged: (value) {
-                              setState(() {
-                                task['Task_Complete_Status'] = value!;
-                                // Optional: Add logic to update task status in backend if needed
-                              });
-                            },
+                          SizedBox(height: 8),
+                          // Description
+                          Text(
+                            task['Task_Description'],
+                            style: TextStyle(fontSize: 14, color: Colors.black54),
+                          ),
+                          SizedBox(height: 8),
+                          // Priority and due date
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: task['Task_Priority'] == 1
+                                      ? Colors.red.shade100
+                                      : task['Task_Priority'] == 2
+                                          ? Colors.orange.shade100
+                                          : Colors.green.shade100,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Text(
+                                  _mapPriority(task['Task_Priority']),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: task['Task_Priority'] == 1
+                                        ? Colors.red
+                                        : task['Task_Priority'] == 2
+                                            ? Colors.orange
+                                            : Colors.green,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                'Due Date: ${task['Task_Due_Date']}',
+                                style: TextStyle(fontSize: 12, color: Colors.black54),
+                              ),
+                            ],
                           ),
                         ],
                       ),
