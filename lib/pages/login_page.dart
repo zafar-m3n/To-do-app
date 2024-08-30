@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ver_1/pages/home_page.dart';
 import 'package:ver_1/pages/register_page.dart';
+import 'package:ver_1/pages/forgot_password_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -127,6 +128,13 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  void forgotPasswordRoute() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ForgotPasswordPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -182,9 +190,12 @@ class _LoginPageState extends State<LoginPage> {
                 // Forgot password
                 Align(
                   alignment: Alignment.centerRight,
-                  child: Text(
-                    'Forgot Password?',
-                    style: TextStyle(color: Colors.grey[600]),
+                  child: InkWell(
+                    onTap: () => forgotPasswordRoute(),
+                    child: Text(
+                      'Forgot Password?',
+                      style: TextStyle(color: Colors.grey[600]),
+                    ),
                   ),
                 ),
 
