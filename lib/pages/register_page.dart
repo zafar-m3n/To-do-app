@@ -234,6 +234,13 @@ class _SignUpState extends State<SignUp> {
                   // Google register functionality
                 }),
 
+                const SizedBox(height: 15),
+
+                // Facebook button (copied from login page)
+                _buildSocialLoginButton('Register with Facebook', Icons.facebook, Colors.blue.shade800, Colors.white, () {
+                  // Facebook register functionality
+                }),
+
                 const SizedBox(height: 25),
 
                 // Redirect to Login text
