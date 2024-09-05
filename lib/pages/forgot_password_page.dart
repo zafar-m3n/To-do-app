@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as http;  // Import the http package
-import 'package:flutter_dotenv/flutter_dotenv.dart';  // Import dotenv for environment variables
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'login_page.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -55,13 +55,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Future<void> resetPassword() async {
     final email = emailController.text;
 
-    if (email.isEmpty || !RegExp(r'^[\w\.\-]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$').hasMatch(email)) {
+    if (email.isEmpty ||
+        !RegExp(r'^[\w\.\-]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$').hasMatch(email)) {
       _showToast('Please enter a valid email address.', false);
       return;
     }
 
     final String baseUrl = dotenv.env['BASE_URL']!;
-    final url = '$baseUrl/api/authentication/forgot-username-or-password/$email';
+    final url =
+        '$baseUrl/api/authentication/forgot-username-or-password/$email';
 
     print("Making request to $url");
 
@@ -80,7 +82,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         MaterialPageRoute(builder: (context) => const LoginPage()),
       );
     } else {
-      _showToast(response.body, false);
+      _showToast(
+          'Unable to reset password for $email. ${response.body}', false);
     }
   }
 
@@ -117,7 +120,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             const SizedBox(height: 20),
             Text(
               'Forgot Password',
-              style: TextStyle(fontSize: 26, color: Colors.blue.shade400, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 26,
+                  color: Colors.blue.shade400,
+                  fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
             TextField(
@@ -126,7 +132,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 hintText: 'Enter your email',
                 fillColor: Colors.white,
                 filled: true,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: const BorderSide(
@@ -155,7 +162,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               ),
               child: Text(
                 'Reset Password',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
               ),
             ),
           ],
