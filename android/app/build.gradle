@@ -51,6 +51,15 @@ android {
         versionName flutterVersionName
     }
 
+    signingConfigs {
+        debug {
+            keyAlias 'todo'
+            keyPassword 'qwerty'
+            storeFile file('todo.jks')
+            storePassword 'qwerty'
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

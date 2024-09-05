@@ -8,11 +8,13 @@
 
 import 'package:flutter_secure_storage_web/flutter_secure_storage_web.dart';
 import 'package:fluttertoast/fluttertoast_web.dart';
+import 'package:google_sign_in_web/google_sign_in_web.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 void registerPlugins([final Registrar? pluginRegistrar]) {
   final Registrar registrar = pluginRegistrar ?? webPluginRegistrar;
   FlutterSecureStorageWeb.registerWith(registrar);
   FluttertoastWebPlugin.registerWith(registrar);
+  GoogleSignInPlugin.registerWith(registrar);
   registrar.registerMessageHandler();
 }

@@ -11,7 +11,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize secure storage
-  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
   // Check if the user is logged in
   String? isLoggedIn = await secureStorage.read(key: 'isLoggedIn');
@@ -40,9 +40,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Tick Off',
       theme: _buildThemeData(context),
-      home: isLoggedIn ? HomePage() : LoginPage(),
+      home: isLoggedIn ? const HomePage() : const LoginPage(),
       routes: {
-        '/home': (context) => HomePage(),
+        '/home': (context) => const HomePage(),
         '/signup': (context) => SignUp(),
       },
     );
@@ -64,6 +64,6 @@ class TaskPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TaskPage();
+    return const TaskPage();
   }
 }

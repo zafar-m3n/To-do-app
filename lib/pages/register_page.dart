@@ -4,9 +4,10 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ver_1/pages/login_page.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SignUp extends StatefulWidget {
-  SignUp({super.key});
+  const SignUp({super.key});
 
   @override
   _SignUpState createState() => _SignUpState();
@@ -43,11 +44,11 @@ class _SignUpState extends State<SignUp> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(isSuccess ? Icons.check : Icons.close, color: Colors.white),
-          SizedBox(width: 12.0),
+          const SizedBox(width: 12.0),
           Flexible(
             child: Text(
               message,
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
               overflow: TextOverflow.visible,
             ),
           ),
@@ -58,7 +59,7 @@ class _SignUpState extends State<SignUp> {
     fToast.showToast(
       child: toast,
       gravity: ToastGravity.BOTTOM,
-      toastDuration: Duration(seconds: 3),
+      toastDuration: const Duration(seconds: 3),
     );
   }
 
@@ -76,7 +77,8 @@ class _SignUpState extends State<SignUp> {
         firstNameController.text.length < 3 ||
         firstNameController.text.length > 15) {
       setState(() {
-        firstNameError = 'First name must be at least 3 and at most 15 characters.';
+        firstNameError =
+            'First name must be at least 3 and at most 15 characters.';
       });
       isValid = false;
     }
@@ -85,7 +87,8 @@ class _SignUpState extends State<SignUp> {
         lastNameController.text.length < 3 ||
         lastNameController.text.length > 15) {
       setState(() {
-        lastNameError = 'Last name must be at least 3 and at most 15 characters.';
+        lastNameError =
+            'Last name must be at least 3 and at most 15 characters.';
       });
       isValid = false;
     }
@@ -134,14 +137,82 @@ class _SignUpState extends State<SignUp> {
 
     if (response.statusCode == 200) {
       _showToast("Registration successful", true);
-      
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
+        MaterialPageRoute(builder: (context) => const LoginPage()),
       );
     } else {
       _showToast("Registration unsuccessful", false);
-      _showToast("${response.body}", false);
+      _showToast(response.body, false);
+    }
+  }
+
+  Future<void> _signInWithGoogle() async {
+    GoogleSignIn _googleSignIn = GoogleSignIn();
+
+    try {
+      final user = await _googleSignIn.signIn();
+      if (user == null) {
+        // User canceled the sign-in process
+        return;
+      }
+
+      // Retrieve the access token
+      final googleAuth = await user.authentication;
+      final accessToken = googleAuth.accessToken;
+      final userId = user.id;
+
+      if (accessToken != null && userId != null) {
+        // Call the backend API to register with third-party credentials
+        await _registerWithThirdParty(
+          firstName: user.displayName?.split(' ')[0] ?? '',
+          lastName: user.displayName?.split(' ')[1] ?? '',
+          userId: userId,
+          accessToken: accessToken,
+          provider: 'google',
+        );
+      } else {
+        _showToast('Failed to retrieve Google access token.', false);
+      }
+    } catch (error) {
+      print('Error signing in with Google: $error');
+      _showToast('Error signing in with Google.', false);
+    }
+  }
+
+  Future<void> _registerWithThirdParty({
+    required String firstName,
+    required String lastName,
+    required String userId,
+    required String accessToken,
+    required String provider,
+  }) async {
+    final String baseUrl = dotenv.env['BASE_URL']!;
+    final url = '$baseUrl/api/authentication/register-with-third-party';
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'firstName': firstName,
+        'lastName': lastName,
+        'userId': userId,
+        'accessToken': accessToken,
+        'provider': provider,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      _showToast("Registration successful", true);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
+    } else {
+      _showToast("Registration unsuccessful", false);
+      _showToast(response.body, false);
     }
   }
 
@@ -205,7 +276,8 @@ class _SignUpState extends State<SignUp> {
                 const SizedBox(height: 25),
 
                 // Register button
-                _buildButton('Register', Colors.blue.shade400, Colors.white, registerUser),
+                _buildButton('Register', Colors.blue.shade400, Colors.white,
+                    registerUser),
 
                 const SizedBox(height: 30),
 
@@ -230,14 +302,17 @@ class _SignUpState extends State<SignUp> {
                 const SizedBox(height: 15),
 
                 // Google button
-                _buildSocialLoginButton('Register with Google', Icons.account_circle, Colors.white, Colors.black, () {
+                _buildSocialLoginButton('Register with Google',
+                    Icons.account_circle, Colors.white, Colors.black, () {
                   // Google register functionality
+                  _signInWithGoogle();
                 }),
 
                 const SizedBox(height: 15),
 
                 // Facebook button (copied from login page)
-                _buildSocialLoginButton('Register with Facebook', Icons.facebook, Colors.blue.shade800, Colors.white, () {
+                _buildSocialLoginButton('Register with Facebook',
+                    Icons.facebook, Colors.blue.shade800, Colors.white, () {
                   // Facebook register functionality
                 }),
 
@@ -256,7 +331,8 @@ class _SignUpState extends State<SignUp> {
                       onTap: () {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => LoginPage()),
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage()),
                         );
                       },
                       child: const Text(
@@ -291,15 +367,16 @@ class _SignUpState extends State<SignUp> {
         TextField(
           controller: controller,
           obscureText: isObscure,
-          style: TextStyle(fontSize: 18, color: Colors.black),
+          style: const TextStyle(fontSize: 18, color: Colors.black),
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.white,
             hintText: hintText,
-            contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Colors.grey,
                 width: 1.5,
               ),
@@ -318,18 +395,19 @@ class _SignUpState extends State<SignUp> {
             padding: const EdgeInsets.only(top: 5),
             child: Text(
               errorMessage,
-              style: TextStyle(color: Colors.red),
+              style: const TextStyle(color: Colors.red),
             ),
           ),
       ],
     );
   }
 
-  Widget _buildButton(String text, Color backgroundColor, Color textColor, VoidCallback onTap) {
+  Widget _buildButton(
+      String text, Color backgroundColor, Color textColor, VoidCallback onTap) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
-        minimumSize: Size(double.infinity, 50),
+        minimumSize: const Size(double.infinity, 50),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -337,26 +415,29 @@ class _SignUpState extends State<SignUp> {
       onPressed: onTap,
       child: Text(
         text,
-        style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 18),
+        style: TextStyle(
+            color: textColor, fontWeight: FontWeight.bold, fontSize: 18),
       ),
     );
   }
 
-  Widget _buildSocialLoginButton(String text, IconData icon, Color backgroundColor, Color textColor, VoidCallback onTap) {
+  Widget _buildSocialLoginButton(String text, IconData icon,
+      Color backgroundColor, Color textColor, VoidCallback onTap) {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
-        minimumSize: Size(double.infinity, 50),
+        minimumSize: const Size(double.infinity, 50),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
-          side: BorderSide(color: Colors.grey),
+          side: const BorderSide(color: Colors.grey),
         ),
       ),
       icon: Icon(icon, color: textColor),
       onPressed: onTap,
       label: Text(
         text,
-        style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 18),
+        style: TextStyle(
+            color: textColor, fontWeight: FontWeight.bold, fontSize: 18),
       ),
     );
   }

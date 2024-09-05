@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
   String firstName = "";
   String lastName = "";
   List<Map<String, dynamic>> tasks = [];
@@ -121,11 +121,11 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Error"),
+          title: const Text("Error"),
           content: Text(message),
           actions: [
             TextButton(
-              child: Text("OK"),
+              child: const Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -163,7 +163,7 @@ class _HomePageState extends State<HomePage> {
             borderRadius: BorderRadius.circular(20.0),
           ),
           child: Container(
-            padding: EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20.0),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20.0),
@@ -174,14 +174,14 @@ class _HomePageState extends State<HomePage> {
                 CircleAvatar(
                   radius: 50,
                   backgroundColor: Colors.blue.shade400,
-                  child: Icon(Icons.person, size: 80, color: Colors.white),
+                  child: const Icon(Icons.person, size: 80, color: Colors.white),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Text(
                   '$firstName $lastName',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     _logout(); // Call the logout function
@@ -192,7 +192,7 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
-                  child: Text('Logout', style: TextStyle(color: Colors.white)),
+                  child: const Text('Logout', style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),
@@ -208,14 +208,14 @@ class _HomePageState extends State<HomePage> {
     await secureStorage.delete(key: 'isLoggedIn');
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
+      MaterialPageRoute(builder: (context) => const LoginPage()),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         backgroundColor: Colors.blue.shade400,
         elevation: 0,
@@ -223,10 +223,10 @@ class _HomePageState extends State<HomePage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Hi $firstName', style: TextStyle(color: Colors.white)),
+            Text('Hi $firstName', style: const TextStyle(color: Colors.white)),
             GestureDetector(
               onTap: _showProfilePopup,
-              child: Icon(Icons.account_circle, color: Colors.white, size: 30),
+              child: const Icon(Icons.account_circle, color: Colors.white, size: 30),
             ),
           ],
         ),
@@ -236,7 +236,7 @@ class _HomePageState extends State<HomePage> {
           // Navigate to Add_Screen and refresh task list on return
           final result = await Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Add_Screen()),
+            MaterialPageRoute(builder: (context) => const Add_Screen()),
           );
 
           if (result == true) {
@@ -244,10 +244,10 @@ class _HomePageState extends State<HomePage> {
           }
         },
         backgroundColor: Colors.blue.shade400,
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       body: tasks.isEmpty
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: tasks.length,
               itemBuilder: (context, index) {
@@ -273,7 +273,7 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     elevation: 2,
-                    margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
@@ -286,7 +286,7 @@ class _HomePageState extends State<HomePage> {
                               Expanded(
                                 child: Text(
                                   '${task['Task_Code']}: ${task['Task_Name']}',
-                                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                 ),
                               ),
                               // Completed icon and delete button on the right
@@ -299,7 +299,7 @@ class _HomePageState extends State<HomePage> {
                                     color: Colors.blue,
                                   ),
                                   IconButton(
-                                    icon: Icon(Icons.delete, color: Colors.red),
+                                    icon: const Icon(Icons.delete, color: Colors.red),
                                     onPressed: () {
                                       _deleteTask(task); // Call delete task with the entire task data
                                     },
@@ -308,19 +308,19 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           // Description
                           Text(
                             task['Task_Description'],
-                            style: TextStyle(fontSize: 14, color: Colors.black54),
+                            style: const TextStyle(fontSize: 14, color: Colors.black54),
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           // Priority and due date
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                 decoration: BoxDecoration(
                                   color: task['Task_Priority'] == 1
                                       ? Colors.red.shade100
@@ -343,7 +343,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                               Text(
                                 'Due Date: ${task['Task_Due_Date']}',
-                                style: TextStyle(fontSize: 12, color: Colors.black54),
+                                style: const TextStyle(fontSize: 12, color: Colors.black54),
                               ),
                             ],
                           ),

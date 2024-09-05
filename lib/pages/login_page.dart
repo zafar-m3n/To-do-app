@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ver_1/pages/home_page.dart';
 import 'package:ver_1/pages/register_page.dart';
 import 'package:ver_1/pages/forgot_password_page.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -18,7 +19,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
   late FToast fToast;
 
   String? emailError;
@@ -42,11 +43,11 @@ class _LoginPageState extends State<LoginPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(isSuccess ? Icons.check : Icons.close, color: Colors.white),
-          SizedBox(width: 12.0),
+          const SizedBox(width: 12.0),
           Flexible(
             child: Text(
               message,
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
               overflow: TextOverflow.visible,
             ),
           ),
@@ -57,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
     fToast.showToast(
       child: toast,
       gravity: ToastGravity.BOTTOM,
-      toastDuration: Duration(seconds: 3),
+      toastDuration: const Duration(seconds: 3),
     );
   }
 
@@ -70,7 +71,8 @@ class _LoginPageState extends State<LoginPage> {
     bool isValid = true;
 
     if (emailController.text.isEmpty ||
-        !RegExp(r'^[\w\.\-]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$').hasMatch(emailController.text)) {
+        !RegExp(r'^[\w\.\-]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$')
+            .hasMatch(emailController.text)) {
       setState(() {
         emailError = 'Invalid email address.';
       });
@@ -107,31 +109,104 @@ class _LoginPageState extends State<LoginPage> {
     if (response.statusCode == 200) {
       final responseData = jsonDecode(response.body);
 
-      await secureStorage.write(key: 'user_data', value: jsonEncode(responseData));
+      await secureStorage.write(
+          key: 'user_data', value: jsonEncode(responseData));
       await secureStorage.write(key: 'isLoggedIn', value: 'true');
 
       _showToast("Login Successful.", true);
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => const HomePage()),
       );
     } else {
-      _showToast("Login Failed. Please check your credentials and try again.", false);
+      _showToast(
+          "Login Failed. Please check your credentials and try again.", false);
+    }
+  }
+
+  Future<void> _signInWithGoogle() async {
+    GoogleSignIn _googleSignIn = GoogleSignIn();
+
+    try {
+      final user = await _googleSignIn.signIn();
+      if (user == null) {
+        // User canceled the sign-in process
+        return;
+      }
+
+      // Retrieve the access token
+      final googleAuth = await user.authentication;
+      final accessToken = googleAuth.accessToken;
+      final userId = user.id;
+
+      if (accessToken != null && userId != null) {
+        // Call the backend API to login with third-party credentials
+        await _loginWithThirdParty(
+          userId: userId,
+          accessToken: accessToken,
+          provider: 'google',
+        );
+      } else {
+        _showToast('Failed to retrieve Google access token.', false);
+      }
+    } catch (error) {
+      print('Error signing in with Google: $error');
+      _showToast('Error signing in with Google.', false);
+    }
+  }
+
+  Future<void> _loginWithThirdParty({
+    required String userId,
+    required String accessToken,
+    required String provider,
+  }) async {
+    final String baseUrl = dotenv.env['BASE_URL']!;
+    final url = '$baseUrl/api/authentication/login-with-third-party';
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'userId': userId,
+        'accessToken': accessToken,
+        'provider': provider,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+
+      await secureStorage.write(
+          key: 'user_data', value: jsonEncode(responseData));
+      await secureStorage.write(key: 'isLoggedIn', value: 'true');
+
+      _showToast("Login Successful.", true);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    } else {
+      _showToast(
+          "Login Failed. Please check your credentials and try again.", false);
+      _showToast(response.body, false);
     }
   }
 
   void registerRoute() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SignUp()),
+      MaterialPageRoute(builder: (context) => const SignUp()),
     );
   }
 
   void forgotPasswordRoute() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ForgotPasswordPage()),
+      MaterialPageRoute(builder: (context) => const ForgotPasswordPage()),
     );
   }
 
@@ -146,7 +221,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 60),
+                const SizedBox(height: 60),
 
                 Icon(
                   Icons.lock,
@@ -154,7 +229,7 @@ class _LoginPageState extends State<LoginPage> {
                   color: Colors.blue.shade400,
                 ),
 
-                SizedBox(height: 50),
+                const SizedBox(height: 50),
 
                 Text(
                   'Welcome to To Do',
@@ -165,7 +240,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
 
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
 
                 // Username TextField
                 _buildTextField(
@@ -175,7 +250,7 @@ class _LoginPageState extends State<LoginPage> {
                   errorMessage: emailError,
                 ),
 
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
 
                 // Password TextField
                 _buildTextField(
@@ -185,7 +260,7 @@ class _LoginPageState extends State<LoginPage> {
                   errorMessage: passwordError,
                 ),
 
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
 
                 // Forgot password
                 Align(
@@ -199,12 +274,13 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
 
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
 
                 // Login button
-                _buildLoginButton('Login', Colors.blue.shade400, Colors.white, loginUser),
+                _buildLoginButton(
+                    'Login', Colors.blue.shade400, Colors.white, loginUser),
 
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
 
                 // Continue with text
                 Row(
@@ -231,28 +307,31 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
 
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
 
                 // Google and Facebook login buttons
-                _buildSocialLoginButton('Login with Google', Icons.account_circle, Colors.white, Colors.black, () {
+                _buildSocialLoginButton('Login with Google',
+                    Icons.account_circle, Colors.white, Colors.black, () {
                   // Google login functionality
+                  _signInWithGoogle();
                 }),
-                SizedBox(height: 15),
-                _buildSocialLoginButton('Login with Facebook', Icons.facebook, Colors.blue.shade800, Colors.white, () {
+                const SizedBox(height: 15),
+                _buildSocialLoginButton('Login with Facebook', Icons.facebook,
+                    Colors.blue.shade800, Colors.white, () {
                   // Facebook login functionality
                 }),
 
-                SizedBox(height: 25),
+                const SizedBox(height: 25),
 
                 // Register now text
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       'Don\'t have an account?',
                       style: TextStyle(color: Colors.black),
                     ),
-                    SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     InkWell(
                       onTap: () => registerRoute(),
                       child: Text(
@@ -285,15 +364,16 @@ class _LoginPageState extends State<LoginPage> {
         TextField(
           controller: controller,
           obscureText: isObscure,
-          style: TextStyle(fontSize: 18, color: Colors.black),
+          style: const TextStyle(fontSize: 18, color: Colors.black),
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.white,
             hintText: hintText,
-            contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Colors.grey,
                 width: 1.5,
               ),
@@ -312,18 +392,19 @@ class _LoginPageState extends State<LoginPage> {
             padding: const EdgeInsets.only(top: 5),
             child: Text(
               errorMessage,
-              style: TextStyle(color: Colors.red),
+              style: const TextStyle(color: Colors.red),
             ),
           ),
       ],
     );
   }
 
-  Widget _buildLoginButton(String text, Color backgroundColor, Color textColor, VoidCallback onTap) {
+  Widget _buildLoginButton(
+      String text, Color backgroundColor, Color textColor, VoidCallback onTap) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
-        minimumSize: Size(double.infinity, 50),
+        minimumSize: const Size(double.infinity, 50),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -331,17 +412,18 @@ class _LoginPageState extends State<LoginPage> {
       onPressed: onTap,
       child: Text(
         text,
-        style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 18),
+        style: TextStyle(
+            color: textColor, fontWeight: FontWeight.bold, fontSize: 18),
       ),
     );
   }
 
-  Widget _buildSocialLoginButton(
-      String text, IconData icon, Color backgroundColor, Color textColor, VoidCallback onTap) {
+  Widget _buildSocialLoginButton(String text, IconData icon,
+      Color backgroundColor, Color textColor, VoidCallback onTap) {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
-        minimumSize: Size(double.infinity, 50),
+        minimumSize: const Size(double.infinity, 50),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -350,7 +432,8 @@ class _LoginPageState extends State<LoginPage> {
       icon: Icon(icon, color: textColor, size: 24),
       label: Text(
         text,
-        style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 18),
+        style: TextStyle(
+            color: textColor, fontWeight: FontWeight.bold, fontSize: 18),
       ),
     );
   }

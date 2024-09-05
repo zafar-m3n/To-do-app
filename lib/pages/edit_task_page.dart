@@ -7,7 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class Edit_Screen extends StatefulWidget {
   final Map<String, dynamic> task;
 
-  Edit_Screen({Key? key, required this.task}) : super(key: key);
+  const Edit_Screen({Key? key, required this.task}) : super(key: key);
 
   @override
   State<Edit_Screen> createState() => _Edit_ScreenState();
@@ -17,14 +17,14 @@ class _Edit_ScreenState extends State<Edit_Screen> {
   late TextEditingController titleController;
   late TextEditingController descriptionController;
   late TextEditingController taskCodeController;
-  FocusNode _focusNode1 = FocusNode();
-  FocusNode _focusNode2 = FocusNode();
+  final FocusNode _focusNode1 = FocusNode();
+  final FocusNode _focusNode2 = FocusNode();
   String _selectedPriority = 'Medium';
   DateTime? _selectedDate;
   String _selectedStatus = 'Pending';
 
   final Color _borderColor = Colors.grey;
-  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
   @override
   void initState() {
@@ -67,9 +67,9 @@ class _Edit_ScreenState extends State<Edit_Screen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue.shade400,
-        title: Text('Edit Task'),
+        title: const Text('Edit Task'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -84,26 +84,26 @@ class _Edit_ScreenState extends State<Edit_Screen> {
             children: [
               _buildLabel('Task Code'),
               _buildTextField(taskCodeController, isEnabled: false),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildLabel('Title'),
               _buildTextField(titleController, focusNode: _focusNode1),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildLabel('Description'),
               _buildTextField(
                 descriptionController,
                 focusNode: _focusNode2,
                 maxLines: 3,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildLabel('Priority'),
               _buildPriorityDropdown(),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildLabel('Due Date'),
               _buildDatePicker(),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildLabel('Status'),
               _buildStatusDropdown(),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildButtonRow(),
             ],
           ),
@@ -133,7 +133,7 @@ class _Edit_ScreenState extends State<Edit_Screen> {
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white,
-        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
@@ -163,10 +163,10 @@ class _Edit_ScreenState extends State<Edit_Screen> {
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: _borderColor, width: 1.5),
       ),
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       child: DropdownButtonFormField<String>(
         value: _selectedPriority,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           border: InputBorder.none,
         ),
         items: ['High', 'Medium', 'Low'].map((String priority) {
@@ -180,7 +180,7 @@ class _Edit_ScreenState extends State<Edit_Screen> {
             _selectedPriority = newValue!;
           });
         },
-        icon: Icon(Icons.arrow_drop_down, color: Colors.grey),
+        icon: const Icon(Icons.arrow_drop_down, color: Colors.grey),
       ),
     );
   }
@@ -192,10 +192,10 @@ class _Edit_ScreenState extends State<Edit_Screen> {
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: _borderColor, width: 1.5),
       ),
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       child: DropdownButtonFormField<String>(
         value: _selectedStatus,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           border: InputBorder.none,
         ),
         items: ['Pending', 'Completed'].map((String status) {
@@ -209,7 +209,7 @@ class _Edit_ScreenState extends State<Edit_Screen> {
             _selectedStatus = newValue!;
           });
         },
-        icon: Icon(Icons.arrow_drop_down, color: Colors.grey),
+        icon: const Icon(Icons.arrow_drop_down, color: Colors.grey),
       ),
     );
   }
@@ -219,7 +219,7 @@ class _Edit_ScreenState extends State<Edit_Screen> {
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white,
-        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
@@ -238,10 +238,10 @@ class _Edit_ScreenState extends State<Edit_Screen> {
         title: Text(
           _selectedDate == null
               ? 'Select Due Date'
-              : '${_selectedDate!.toLocal().toString().split(' ')[0]}',
-          style: TextStyle(fontSize: 16, color: Colors.black),
+              : _selectedDate!.toLocal().toString().split(' ')[0],
+          style: const TextStyle(fontSize: 16, color: Colors.black),
         ),
-        trailing: Icon(Icons.calendar_today, color: Colors.grey),
+        trailing: const Icon(Icons.calendar_today, color: Colors.grey),
         onTap: () async {
           DateTime? picked = await showDatePicker(
             context: context,
@@ -266,22 +266,22 @@ class _Edit_ScreenState extends State<Edit_Screen> {
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.blue.shade400,
-            minimumSize: Size(150, 50),
+            minimumSize: const Size(150, 50),
           ),
           onPressed: () {
             _editTask(); // Call the function to edit task
           },
-          child: Text('Save Task', style: TextStyle(color: Colors.white)),
+          child: const Text('Save Task', style: TextStyle(color: Colors.white)),
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
-            minimumSize: Size(150, 50),
+            minimumSize: const Size(150, 50),
           ),
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text('Cancel', style: TextStyle(color: Colors.white)),
+          child: const Text('Cancel', style: TextStyle(color: Colors.white)),
         ),
       ],
     );
@@ -342,11 +342,11 @@ class _Edit_ScreenState extends State<Edit_Screen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Error"),
+          title: const Text("Error"),
           content: Text(message),
           actions: [
             TextButton(
-              child: Text("OK"),
+              child: const Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
               },

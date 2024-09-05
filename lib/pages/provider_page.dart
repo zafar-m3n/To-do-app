@@ -21,13 +21,13 @@ class _ProviderPageState extends State<ProviderPage> {
 
   //pages
   final List<Widget> _pages = [
-    HomePage(),
+    const HomePage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Tasks'),

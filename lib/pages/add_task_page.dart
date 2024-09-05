@@ -15,10 +15,10 @@ class _Add_ScreenState extends State<Add_Screen> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   final taskCodeController = TextEditingController(text: ''); // Set as empty string for new task
-  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
-  FocusNode _focusNode1 = FocusNode();
-  FocusNode _focusNode2 = FocusNode();
+  final FocusNode _focusNode1 = FocusNode();
+  final FocusNode _focusNode2 = FocusNode();
   String _selectedPriority = 'Medium';
   DateTime? _selectedDate;
   String _selectedStatus = 'Pending';
@@ -30,9 +30,9 @@ class _Add_ScreenState extends State<Add_Screen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue.shade400,
-        title: Text('Add Task'),
+        title: const Text('Add Task'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -47,10 +47,10 @@ class _Add_ScreenState extends State<Add_Screen> {
             children: [
               _buildLabel('Task Code'),
               _buildTextField(taskCodeController, isEnabled: false, hintText: 'TSK-X'),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildLabel('Title'),
               _buildTextField(titleController, focusNode: _focusNode1, hintText: 'Enter task title'),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildLabel('Description'),
               _buildTextField(
                 descriptionController,
@@ -58,16 +58,16 @@ class _Add_ScreenState extends State<Add_Screen> {
                 maxLines: 3,
                 hintText: 'Enter task description',
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildLabel('Priority'),
               _buildPriorityDropdown(),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildLabel('Due Date'),
               _buildDatePicker(),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildLabel('Status'),
               _buildStatusDropdown(),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildButtonRow(),
             ],
           ),
@@ -98,7 +98,7 @@ class _Add_ScreenState extends State<Add_Screen> {
         hintText: hintText, // Set the hint text for placeholder
         filled: true,
         fillColor: Colors.white,
-        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
@@ -128,10 +128,10 @@ class _Add_ScreenState extends State<Add_Screen> {
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: _borderColor, width: 1.5),
       ),
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       child: DropdownButtonFormField<String>(
         value: _selectedPriority,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           border: InputBorder.none,
         ),
         items: ['High', 'Medium', 'Low'].map((String priority) {
@@ -145,7 +145,7 @@ class _Add_ScreenState extends State<Add_Screen> {
             _selectedPriority = newValue!;
           });
         },
-        icon: Icon(Icons.arrow_drop_down, color: Colors.grey),
+        icon: const Icon(Icons.arrow_drop_down, color: Colors.grey),
       ),
     );
   }
@@ -157,10 +157,10 @@ class _Add_ScreenState extends State<Add_Screen> {
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: _borderColor, width: 1.5),
       ),
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       child: DropdownButtonFormField<String>(
         value: _selectedStatus,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           border: InputBorder.none,
         ),
         items: ['Pending', 'Completed'].map((String status) {
@@ -174,7 +174,7 @@ class _Add_ScreenState extends State<Add_Screen> {
             _selectedStatus = newValue!;
           });
         },
-        icon: Icon(Icons.arrow_drop_down, color: Colors.grey),
+        icon: const Icon(Icons.arrow_drop_down, color: Colors.grey),
       ),
     );
   }
@@ -184,7 +184,7 @@ class _Add_ScreenState extends State<Add_Screen> {
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white,
-        contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
@@ -203,10 +203,10 @@ class _Add_ScreenState extends State<Add_Screen> {
         title: Text(
           _selectedDate == null
               ? 'Select Due Date'
-              : '${_selectedDate!.toLocal().toString().split(' ')[0]}',
-          style: TextStyle(fontSize: 16, color: Colors.black),
+              : _selectedDate!.toLocal().toString().split(' ')[0],
+          style: const TextStyle(fontSize: 16, color: Colors.black),
         ),
-        trailing: Icon(Icons.calendar_today, color: Colors.grey),
+        trailing: const Icon(Icons.calendar_today, color: Colors.grey),
         onTap: () async {
           DateTime? picked = await showDatePicker(
             context: context,
@@ -231,22 +231,22 @@ class _Add_ScreenState extends State<Add_Screen> {
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.blue.shade400,
-            minimumSize: Size(150, 50),
+            minimumSize: const Size(150, 50),
           ),
           onPressed: () {
             _addTask(); // Call the function to add task
           },
-          child: Text('Add Task', style: TextStyle(color: Colors.white)),
+          child: const Text('Add Task', style: TextStyle(color: Colors.white)),
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,
-            minimumSize: Size(150, 50),
+            minimumSize: const Size(150, 50),
           ),
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text('Cancel', style: TextStyle(color: Colors.white)),
+          child: const Text('Cancel', style: TextStyle(color: Colors.white)),
         ),
       ],
     );
@@ -307,11 +307,11 @@ class _Add_ScreenState extends State<Add_Screen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Error"),
+          title: const Text("Error"),
           content: Text(message),
           actions: [
             TextButton(
-              child: Text("OK"),
+              child: const Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
               },

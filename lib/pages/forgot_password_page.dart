@@ -5,6 +5,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';  // Import dotenv for envir
 import 'login_page.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({super.key});
+
   @override
   _ForgotPasswordPageState createState() => _ForgotPasswordPageState();
 }
@@ -31,11 +33,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(isSuccess ? Icons.check : Icons.close, color: Colors.white),
-          SizedBox(width: 12.0),
+          const SizedBox(width: 12.0),
           Flexible(
             child: Text(
               message,
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
               overflow: TextOverflow.visible,
             ),
           ),
@@ -46,7 +48,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     fToast.showToast(
       child: toast,
       gravity: ToastGravity.BOTTOM,
-      toastDuration: Duration(seconds: 3),
+      toastDuration: const Duration(seconds: 3),
     );
   }
 
@@ -75,10 +77,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       _showToast('Email sent successfully to $email. ${response.body}', true);
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
+        MaterialPageRoute(builder: (context) => const LoginPage()),
       );
     } else {
-      _showToast('${response.body}', false);
+      _showToast(response.body, false);
     }
   }
 
@@ -86,17 +88,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Forgot Password',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.blue.shade400,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => LoginPage()),
+              MaterialPageRoute(builder: (context) => const LoginPage()),
             );
           },
         ),
@@ -112,22 +114,22 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               size: 100,
               color: Colors.blue.shade400,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               'Forgot Password',
               style: TextStyle(fontSize: 26, color: Colors.blue.shade400, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextField(
               controller: emailController,
               decoration: InputDecoration(
                 hintText: 'Enter your email',
                 fillColor: Colors.white,
                 filled: true,
-                contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     color: Colors.grey,
                     width: 1.5,
                   ),
@@ -141,19 +143,19 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: resetPassword,
-              child: Text(
-                'Reset Password',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
-              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue.shade400,
-                minimumSize: Size(double.infinity, 50),
+                minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
+              ),
+              child: Text(
+                'Reset Password',
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
               ),
             ),
           ],
